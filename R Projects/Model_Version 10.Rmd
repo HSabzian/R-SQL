@@ -1,0 +1,2124 @@
+---
+title: "Mathematical Model of Cultural evolution"
+author: "Hossein Sabzian Papi"
+date: "2022-12-08"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r, echo = FALSE}
+
+### Henrich Function 
+ Henrich_f <- function (alpha, beta, N) { - (alpha) + (beta * (0.577 + log(N)))}
+
+## standard form (logistic)
+   stand_z <- function(E, k, O, O_zero) {
+      
+      output <- (  E / ( 1 + exp( -k * (O - O_zero ))))
+      
+      return(output)
+    }
+
+# Our function function (tanh)
+
+
+f_z <- function(E, k, extended_o, o_zero) {
+  
+   output <- ( 2 * E / ( 1 + exp( -k * (extended_o - o_zero )))) - E
+  
+  return(output)
+}   
+   
+ ## Extended  Modular form
+   LY <- function(N, M, E, beta){
+      
+      output = (beta * log(N) + M + E) / ( E - beta * log(N) - M)
+      
+      return(output)
+    }
+    
+   
+    Y = function(LY, L){
+      
+      output = (log(LY)) / L
+      
+      return(output)
+      
+    }      
+  
+
+   O = function( Y,o_zero) {
+      output =   Y + o_zero
+      return(output) 
+    } 
+    
+  
+    Extended_z <- function(L, k, O, o_zero) {
+      
+      output <- ( 2 * L / ( 1 + exp( -k * (O - o_zero )))) - L
+      
+      return(output)
+    }
+
+ 
+     ### Restricted Form
+    
+    Restricted_z_henrich <- function(alpha, beta, N, E) {
+      
+      H = - (alpha) + (beta * (0.577 + log(N)))
+      
+      g = log((E + H )/(E - H))
+      
+      output <- (((E *exp(g)) - E)/(1 + exp(g)))
+      
+      return(output)
+      
+      
+    }  
+    
+
+```
+
+
+# Models contributions
+
+In this paper, we want to develop a mathematical model in order to cover following goals:
+
+1 - A mathematical function of a trait fitness
+
+-   The ideal point for each trait is assumed to be set by environment.
+
+2- A mathematical function of individual-level evolution of a trait.
+
+-   It is about a trait adaptation to environment.
+
+-   It shows how a trait growth is limited by the environment at the individual level.
+
+-   It includes a cognitive factor so that each social learner can have a varying rate of that cognitive factor.
+
+-   It includes the number of times that a learner can try to learn a trait
+
+3- A mathematical Function of population-level diffusion of a trait.
+
+-   It shows how a trait density gets formed over a range of generations by varying rates of social transmission
+
+-   It shows how a trait density gets indirectly limited by the environment.
+
+-   It shows how a trait diversifies into a number of traits over time (multiple equilibria) [not this point yet].
+
+4 - A integrated function of 1,2 and 3.
+
+
+
+# Proposed mathematical model for the evolution of trait z.
+
+This model is designed to show how a domain-specific trait like $z$ evolves over time ($T$) under an environmental limit (E) where;
+
+1- People can process information differently.
+
+2- People can have different opportunities.
+
+3- people can select differently.
+
+## Major body 
+
+It is mathematically expressed as the *recursive* Eq(1):
+
+$$
+\begin{equation}
+\tag{Eq(1)}
+Z_{it_{1}} = ( \frac{ E(X-1) } {X + 1} )
+\end{equation}
+$$
+
+Where
+
+$Z_{it_{1}}$ is the amount of trait $z$ in a learner($i$) at time($t_{1}$).
+
+$Z_{it_{1}} :  R\rightarrow [-E,... E]$ that when E is large we naturally have $Z_{it_{1}} :R\rightarrow R$
+
+$E$ is the environment's limit ($E$ )that trait $z$ can not exceed it
+
+$X$ is the \textbf{learning function} of learner($i$). Its structure is as following:
+
+$$
+\begin{equation}
+\tag{Eq(2)}
+X = e ^{K_{i}(\hat{Z_{it}} - Z_{0})}
+\end{equation}
+$$
+
+where
+
+
+$K_{i}$ is the \textbf{learning rate }of learner($i$) which ranges from 0 to 1 ($K_{i}\in (0, 1]$). This is an individual cognitive factor.
+
+$Z_{0}$ is the \textbf{critical amount of exposure to the skill necessary for skill growth}.\footnote{This is actually midpoint factor for inflection of curve where $Z_{it_{1}} = (1 / 2) [-E,...,E]$ meaning that $Z_{it_{1}}$ gets to half of its co-domain at $Z_{0}$.} 
+
+$\hat{Z_{it}}$ is the \textbf{selected leaning opportunity or amount of exposure} by learner($i$) at time $t$ .For each learner($i$), it is the amount of trait $z$ that learner($i$) can learn from social learners as we have (($\hat{Z_{it}} \in [0, \infty ]$) ). $\hat{Z_{it}}$ is calculated using the Eq(3):
+
+
+
+
+$$
+\begin{equation}
+\tag{Eq(3)}
+\hat{Z_{it}} = SSV_{i} * Z_{Nt}
+\end{equation}
+$$
+
+Where
+
+$$
+SSV_{i}= (S(i)_{1} ,S(i)_{2},S(i)_{3}, S(i)_{i}.., S(i)_{n} )
+$$ 
+
+$SSV_{i}$ is the \textbf{source selection vector} of learner($i$).This is the heart of transmission process.This is a binary vector where $\sum_{i = 1}^{n} SSV_{i} = 1$ meaning that just one source can be selected.\footnote{This assumption can be relaxed}.
+
+$S(i)_{n}$ is the \textbf{selection of learner($i$) on $n_{th}$ source of learning} where $S\in{0, 1}$ meaning that each selection is binary.\footnote{This assumption can be relaxed}.
+
+
+$SSV_{i}$ is the cultural selection which a function of two filters, social and cognitive. It is computed using a data-driven method of Analytical Hierarchy process (AHP) detailed in Appendix I. 
+
+
+$Z_{N,t}$ is the \textbf{learning opportunities vector} with a length equal to the number of all social learners (N), that learner$i$ has at time $t$. The initial $Z_{N,t}$ is shown as:
+
+$$
+\begin{array}{ccc} &
+\begin{array}{cccc} t \end{array}
+\\
+Z_{N,t}=\begin{array}{cccc}
+\\
+\\
+\end{array}
+&
+\left(
+\begin{array}{cccc}
+Z_{1t}\\
+Z_{2t}\\
+Z_{3t}\\
+......\\
+......\\
+Z_{it}\\
+Z_{nt}\\
+ \end{array}
+\right)\end{array}
+$$
+</div>
+
+For learner$i$ at time $t$, the $\hat{Z_{it}}$ is as computed as following:
+
+
+$$
+\hat{Z_{it}} = ( S(i)_{1} * Z_{1t} + S(i)_{2} * Z_{2t} + S(i)_{3} * Z_{3t} + S(i)_{4} * Z_{4t} + ..., +S(i)_{i} * Z_{it} +S(i)_{n}* Z_{nt} )
+$$
+
+Clearly, if $\hat{Z_{it}} = S(i)_{i} * Z_{it}$, then the learner($i$) is learning from himself, otherwise he is learning from others.
+
+By $\hat{Z_{it}}$ for learner$i$ at time $t$. According to Eq(1), the $Z_{it_{1}}$ is computed as following:
+
+
+$$
+\begin{equation}
+Z_{it_{1}} = ( \frac{ E(e ^{K_{i}(\hat{Z_{it}} - Z_{0})}-1) } {e ^{K_{i}(\hat{Z_{it}} - Z_{0})} + 1} )
+\end{equation}
+$$
+
+For all learners, the \textbf{source selection matrix of total population} $SS_{(N,N)}$ can be written as following:
+
+$$
+\begin{array}{ccc} &
+\begin{array}{cccc} 1 & 2 & 3  & i & .. & N\end{array}
+\\
+SSM_{N,N}=\begin{array}{cccc}
+SSV_{1}\\
+SSV_{2}\\
+SSV_{3}\\
+SSV_{i}\\
+..\\
+SSV_{n}\end{array}
+&
+\left(
+\begin{array}{cccc}
+S(1)_{1} & S(1)_{2} & S(1)_{3} & S(1)_{i} &..& S(1)_{n}   \\
+S(2)_{1} & S(2)_{2} & S(2)_{3} & S(2)_{i} &..& S(2)_{n} \\
+S(3)_{1} & S(3)_{2} &S(3)_{3} & S(3)_{i} &..& S(3)_{n} \\ 
+S(i)_{1} & S(i)_{2} & S(i)_{3} & S(i)_{i} &..& S(i)_{n} \\  
+... & ... & ... & ... &..& ...\\
+S(n)_{1} & S(n)_{2} & S(n)_{3} & S(n)_{i} &..& S(n)_{n} \\
+ \end{array}
+\right)\end{array}
+$$
+
+
+For all learners, by multiplying $SSM_{N,N}$ and $Z_{Nt}$ then we can compute \textbf{selected leaning opportunities vector $\hat{Z_{Nt}}$}  of all learners at time $t$ as following:
+
+$$
+\begin{array}{ccc} &
+\begin{array}{cccc} t \end{array}
+\\
+\hat{Z_{Nt}} =\begin{array}{cccc}
+\\
+\\
+\end{array}
+&
+\left(
+\begin{array}{cccc}
+\hat{Z_{1t}} \\
+\hat{Z_{2t}}\\
+\hat{Z_{3t}}\\
+... \\
+\hat{Z_{it}}\\
+\hat{Z_{nt}}\\
+ \end{array}
+\right)\end{array}
+$$
+
+</div>
+
+By having $\hat{Z_{Nt}}$, we can use Eq(1) to compute the evolution of trait z for all learner (N) at time $t$ which is computed as following:
+
+$$
+\begin{array}{ccc} &
+\begin{array}{cccc} t \end{array}
+\\
+Z_{Nt_{1}}=\begin{array}{cccc}
+\\
+\\
+\end{array}
+&
+\left(
+\begin{array}{cccc}
+
+( \frac{ E(e ^{K_{1}([\hat{Z_{1t}} - Z_{0})}-1) } {e ^{K_{1}(\hat{Z_{1t}} - Z_{0})} + 1} )\\
+( \frac{ E(e ^{K_{2}([\hat{Z_{2t}} - Z_{0})}-1) } {e ^{K_{2}(\hat{Z_{2t}} - Z_{0})} + 1} )\\
+( \frac{ E(e ^{K_{3}([\hat{Z_{3t}} - Z_{0})}-1) } {e ^{K_{3}(\hat{Z_{3t}} - Z_{0})} + 1} )\\
+......\\
+......\\
+( \frac{ E(e ^{K_{i}([\hat{Z_{it}} - Z_{0})}-1) } {e ^{K_{i}(\hat{Z_{it}} - Z_{0})} + 1} )\\
+( \frac{ E(e ^{K_{n}([\hat{Z_{nt}} - Z_{0})}-1) } {e ^{K_{n}(\hat{Z_{nt}} - Z_{0})} + 1} )\\
+ \end{array}
+\right)\end{array}
+$$
+## Logistic structure
+
+Our equation is both \textbf{logistic} and \textbf{recursive}. it is logistic  because it conveys an environmental limit to the trait and it is recursive because evolution is a time-dependent phenomenon where each state of it are built upon (or takes input from) the previous states [More explanation needed]. 
+
+For learner($i$), shape of Eq(1) has been shown as following for different values:
+
+$E = [10,5]$, 
+
+$K_{i} = [0.6, 0.085]$,
+
+$\hat{Z_{it}} = [-100:100]$.
+
+
+```{r, fig.align="center", echo=FALSE}
+
+n = -100:100
+
+plot(n,f_z(10,0.6,n, 0), type = "l", ylab = "Z(it+1)" , xlab = "Z_hat(it)")
+## E = 10
+lines(n,f_z(10,0.6,n, 0) )  ## K = 0.6
+#lines(n,f_z(10,0.55,n, 0) )  ## K = 0.55
+#lines(n,f_z(10,0.45,n, 0) )    ## K = 0.45
+#lines(n,f_z(10,0.35,n, 0) )    ## K = 0.35
+#lines(n,f_z(10,0.25,n, 0) )  ## K = 0.25
+#lines(n,f_z(10,0.15,n, 0) )  ## K = 0.15
+#lines(n,f_z(10,0.095,n, 0) )  ## K = 0.095
+lines(n,f_z(10,0.085,n, 0) )  ## K = 0.085
+
+lines(n,f_z(5,0.6,n, 0) , type = "l", col = "blue")
+#lines(n,f_z(5,0.55,n, 0), type = "l", col = "blue" )
+#lines(n,f_z(5,0.45,n, 0) , type = "l", col = "blue")
+#lines(n,f_z(5,0.35,n, 0), type = "l", col = "blue" )
+#lines(n,f_z(5,0.25,n, 0), type = "l", col = "blue" )
+#lines(n,f_z(5,0.15,n, 0) , type = "l", col = "blue")
+#lines(n,f_z(5,0.095,n, 0) , type = "l", col = "blue")
+lines(n,f_z(5,0.085,n, 0), type = "l", col = "blue")
+
+```
+
+
+## Recursion
+ 
+Since we have a recursive Eq(1), the evolution process is shown as the following:
+
+
+```{r,include=FALSE}
+#install.packages('igraph')
+library(igraph)
+  
+   Delta_z = c(0,0,0,0,1)
+   Learning_opp_vector = c(0,0,1,0,0) ## LV
+  selection_source_matrix = c(0,0,0,1,0) ## SSV
+  selected_learning_opp_vector = c(1,0,0,0,0) ## NT
+  new_Learning_opp_vector = c(0,0,1,0,0) ## LV
+  G = c(Delta_z,
+        Learning_opp_vector,
+        selection_source_matrix,
+        selected_learning_opp_vector,
+        new_Learning_opp_vector)
+  G = matrix(G,5,5, byrow = TRUE)
+   colnames(G) = rownames(G) = c("4- Dlta Z(T)", "1 - LV( T  )", "2 - SSV",
+                                 "3- O( T )", "5-LV( T + 1 )")
+```
+
+
+
+```{r, fig.align="center", echo = FALSE}
+set.seed(1)
+network <- graph_from_adjacency_matrix(G)
+plot(network, sub = "Evolution as a recursive process")   
+  
+```
+
+This figure clearly shows:
+
+--- step 1: we have some learning opportunities (trait Z) [learning opportunities vector ]
+
+--- step 2: we select from them 
+
+--- step 3: Process it and change the $z$, then we go to step 1 [change of $Z$ and making new learning opportunities ]
+
+
+## Learning mechanism
+
+We must explain why we choose each piece of math to represent each particular process
+
+why is learning logarithmic? what evidence or prior work exists on this? When is learning exponential instead? What difference does this make?
+
+By plotting Eq(2), it is clear that learning has an exponential structure as:
+
+The structure of Eq(1) is in turn logistic as :
+
+So, substitution of Eq(2) in Eq(1) gives a logistic structure:
+
+
+Refining a complex system will result in saturating learning patterns (logarithmic learning)  whereas learning a simple environmental optimum can create patterns of accelerated exponential learning
+
+
+
+# Analytical Caluculation of example I (Homogenous cognitive structure)
+
+Suppose, we have the following parameters:
+
+$N = 6$
+
+$E = 10$
+
+$LR_{1} = LR_{2} =LR_{3} =LR_{4} =LR_{5} = LR_{6} = 0.3$ 
+
+$X_{0} = 0$
+
+With learning strategies:
+
+$SSV_{1} = [1,0,0,0,0,0]$ ; Source selection vector of learner($1$)
+
+$SSV_{2} = [0,1,0,0,0,0]$ ; Source selection vector of learner($2$)
+
+$SSV_{3} = [0,0,1,0,0,0]$ ; Source selection vector of learner($3$)
+
+$SSV_{4} = [0,0,0,1,0,0]$ ; Source selection vector of learner($4$)
+
+$SSV_{5} = [0,0,0,0,1,0]$ ; Source selection vector of learner($5$)
+
+$SSV_{6} = [0,0,0,0,0,1]$ ; Source selection vector of learner($6$)
+
+and the initial learning opportunities vector $Z_{N,t_{1}}$ is as following:
+
+$$
+\begin{array}{ccc} &
+\begin{array}{cccc} t_{1} \end{array}
+\\
+Z_{6,t_{1}} =\begin{array}{cccc}
+z_{1}\\
+z_{2}\\
+z_{3}\\
+z_{4}\\
+z_{5}\\
+z_{6}\\
+\end{array}
+&
+\left(
+\begin{array}{cccc}
+0.5   \\
+1  \\
+1.5  \\
+2  \\
+2.5  \\
+3
+ \end{array}
+\right)\end{array}
+$$
+
+</div>
+
+Our purpose is to compute $DLM_{(6,7)}$
+
+```{r, include=FALSE}
+## selection strategies 
+SSV_1 = cbind(1,0,0,0,0,0)
+SSV_2 = cbind(0,1,0,0,0,0)
+SSV_3 = cbind(0,0,1,0,0,0)
+SSV_4 = cbind(0,0,0,1,0,0)
+SSV_5 = cbind(0,0,0,0,1,0)
+SSV_6 = cbind(0,0,0,0,0,1)
+
+#### first opportunity vector (Z_1)
+LV_t1 = rbind(0.5, 1, 1.5, 2, 2.5 ,3)
+#### Selected learning opportunities
+O_1_t1 = SSV_1 %*% LV_t1
+O_2_t1 = SSV_2 %*% LV_t1
+O_3_t1 = SSV_3 %*% LV_t1
+O_4_t1 = SSV_4 %*% LV_t1
+O_5_t1 = SSV_5 %*% LV_t1
+O_6_t1 = SSV_6 %*% LV_t1
+
+#### Evolution of trait
+Delt_Z_1_t1 = f_z(10,0.3,O_1_t1,0)
+Delt_Z_2_t1 = f_z(10,0.3,O_2_t1,0)
+Delt_Z_3_t1 = f_z(10,0.3,O_3_t1,0)
+Delt_Z_4_t1 = f_z(10,0.3,O_4_t1,0)
+Delt_Z_5_t1 = f_z(10,0.3,O_5_t1,0)
+Delt_Z_6_t1 = f_z(10,0.3,O_6_t1,0)
+
+####  amount of trait z for each learner at time 2
+Z_1_t2 = Delt_Z_1_t1
+Z_2_t2 = Delt_Z_2_t1
+Z_3_t2 = Delt_Z_3_t1
+Z_4_t2 = Delt_Z_4_t1
+Z_5_t2 = Delt_Z_5_t1
+Z_6_t2 = Delt_Z_6_t1
+
+## Second  opportunity vector (LV_2)
+
+LV_t2 = rbind(Z_1_t2, Z_2_t2, Z_3_t2, Z_4_t2, Z_5_t2, Z_6_t2 )
+
+```
+
+## Caluculation of  learning opportunities vectors ( $Z(6,t_{2})$ ,..,$Z(6,t_{7})$ )
+
+In the first step, we should use Eq(2) to compute $\Delta Z_{it_{1}}$. For this purpose we need to compute the $O_{it_{1}}$ for all social learners Using the Eq(3):
+
+Using the Eq(3), we compute the $O_{it_{1}}$ for all social learners
+
+$O_{1t_{1}} = SSV_{1} * Z_{6,t_{1}} = 0.5$
+
+$O_{2t_{1}}  = SSV_{2} * Z_{6,t_{1}} = 1$
+
+$O_{3t_{1}}  = SSV_{3} * Z_{6,t_{1}} = 1.5$
+
+$O_{4t_{1}} = SSV_{4} * Z_{6,t_{1}} = 2$
+
+$O_{5t_{1}}  = SSV_{5} * Z_{6,t_{1}} = 2.5$
+
+$O_{6t_{1}}  = SSV_{6} * Z_{6,t_{1}} = 3$
+
+Then we compute $\Delta Z_{it_{1}}$ for all social learners
+
+$\Delta Z_{1t_{1}} = 0.7485969$
+
+$\Delta Z_{2t_{1}} = 1.4888503$
+
+$\Delta Z_{3t_{1}} = 2.2127847$
+
+$\Delta Z_{4t_{1}} = 2.9131261$
+
+$\Delta Z_{5t_{1}} = 3.5835740$
+
+$\Delta Z_{6t_{1}} = 4.2189901$
+
+Then using Eq(1) ,we compute $ Z_{it_{2}}$ for all social learners
+
+$Z_{1t_{2}} = 0.7485969$
+
+$Z_{2t_{2}} = 1.4888503$
+
+$Z_{3t_{2}} =2.2127847$
+
+$Z_{4t_{2}} = 2.9131261$
+
+$Z_{5t_{2}} = 3.5835740$
+
+$Z_{6t_{2}} = 4.2189901$
+
+Finally ,the $Z_{6,t_{2}}$ is computed as following:
+
+$$
+\begin{array}{ccc} &
+\begin{array}{cccc} t_{2} \end{array}
+\\
+Z_{6,t_{2}}=\begin{array}{cccc}
+z_{1}\\
+z_{2}\\
+z_{3}\\
+z_{4}\\
+z_{5}\\
+z_{6}\\
+\end{array}
+&
+\left(
+\begin{array}{cccc}
+ 0.7485969\\
+1.4888503\\
+2.2127847\\
+2.9131261\\
+3.5835740\\
+4.2189901
+ \end{array}
+\right)\end{array}
+$$
+
+</div>
+
+Having $Z_{6,t_{2}}$, we can compute $Z_{6,t_{3}}$ as following:
+
+$$
+\begin{array}{ccc} &
+\begin{array}{cccc} t_{3} \end{array}
+\\
+Z_{6,t_{3}}=\begin{array}{cccc}
+z_{1}\\
+z_{2}\\
+z_{3}\\
+z_{4}\\
+z_{5}\\
+z_{6}\\
+\end{array}
+&
+\left(
+\begin{array}{cccc}
+1.118200   \\
+2.196873  \\
+3.202429  \\
+4.111288  \\
+4.911206  \\
+5.600105
+ \end{array}
+\right)\end{array}
+$$
+
+</div>
+
+Having $Z_{6,t_{3}}$, we can compute $Z_{6,t_{4}}$ as following:
+
+$$
+\begin{array}{ccc} &
+\begin{array}{cccc} t_{4} \end{array}
+\\
+Z_{6,t_{4}}=\begin{array}{cccc}
+z_{1}\\
+z_{2}\\
+z_{3}\\
+z_{4}\\
+z_{5}\\
+z_{6}\\
+\end{array}
+&
+\left(
+\begin{array}{cccc}
+1.661745   \\
+3.180993  \\
+4.465353  \\
+5.488215  \\
+6.271357  \\
+6.858174
+ \end{array}
+\right)\end{array}
+$$
+
+</div>
+
+Having $Z_{6,t_{4}}$, we can compute $Z_{6,t_{5}}$ as following:
+
+$$
+\begin{array}{ccc} &
+\begin{array}{cccc} t_{5} \end{array}
+\\
+Z_{6,t_{5}}=\begin{array}{cccc}
+z_{1}\\
+z_{2}\\
+z_{3}\\
+z_{4}\\
+z_{5}\\
+z_{6}\\
+\end{array}
+&
+\left(
+\begin{array}{cccc}
+2.442246   \\
+4.439574  \\
+5.848503  \\
+6.768253  \\
+7.355453  \\
+7.733969
+ \end{array}
+\right)\end{array}
+$$
+
+</div>
+
+Having $Z_{6,t_{5}}$, we can compute $Z_{6,t_{6}}$ as following:
+
+$$
+\begin{array}{ccc} &
+\begin{array}{cccc} t_{6} \end{array}
+\\
+LV_{6,t_{6}}=\begin{array}{cccc}
+z_{1}\\
+z_{2}\\
+z_{3}\\
+z_{4}\\
+z_{5}\\
+z_{6}\\
+\end{array}
+&
+\left(
+\begin{array}{cccc}
+3.507834   \\
+5.823003  \\
+7.050517  \\
+7.679198  \\
+8.016877  \\
+8.210710
+ \end{array}
+\right)\end{array}
+$$
+
+</div>
+
+Having $LV_{6,t_{6}}$, we can compute $LV_{6,t_{7}}$ as following:
+
+$$
+\begin{array}{ccc} &
+\begin{array}{cccc} t_{7} \end{array}
+\\
+LV_{6,t_{7}}=\begin{array}{cccc}
+z_{1}\\
+z_{2}\\
+z_{3}\\
+z_{4}\\
+z_{5}\\
+z_{6}\\
+\end{array}
+&
+\left(
+\begin{array}{cccc}
+4.824519   \\
+7.031230  \\
+7.847350  \\
+8.183758  \\
+8.344251 \\
+8.430447
+ \end{array}
+\right)\end{array}
+$$
+
+</div>
+
+## Caluculation of Dynamic Learning Matrix ( $DLM_{6,7}$ )
+
+$$
+\begin{array}{ccc} &
+\begin{array}{cccc} t_{1} & t_{2} & t_{3} & t_{4} & t_{5} & t_{6} & t_{7}\end{array}
+\\
+DLM_{(6,7)}=\begin{array}{cccc}
+z_{1}\\
+z_{2}\\
+z_{3}\\
+z_{4}\\
+z_{5}\\
+z_{6}\end{array}
+&
+\left(
+\begin{array}{cccc}
+0.5 & 0.7485969 & 1.118200 & 1.661745 & 2.442246 & 3.507834 & 4.824519\\
+1.0 & 1.4888503 & 2.196873 & 3.180993 & 4.439574 & 5.823003 & 7.031230\\
+1.5 & 2.2127847 & 3.202429 & 4.465353 & 5.848503 & 7.050517 & 7.847350 \\
+2.0 & 2.9131261 & 4.111288 & 5.488215 & 6.768253 & 7.679198 & 8.183758\\
+2.5 & 3.5835740 & 4.911206 & 6.271357 & 7.355453 & 8.016877 & 8.344251\\
+3.0 & 4.2189901 & 5.600105 & 6.858174 & 7.733969 & 8.210710 & 8.430447\\
+ \end{array}
+\right)\end{array}
+$$
+
+
+## Evolution of trait Z for when learners just do learn individually and LR = 0.3 [this is the above example]
+
+```{r,fig.align="center", echo=FALSE}
+SSV_1 = cbind(1,0,0,0,0,0)
+SSV_2 = cbind(0,1,0,0,0,0)
+SSV_3 = cbind(0,0,1,0,0,0)
+SSV_4 = cbind(0,0,0,1,0,0)
+SSV_5 = cbind(0,0,0,0,1,0)
+SSV_6 = cbind(0,0,0,0,0,1)
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:7) {
+  
+s =  f_z(10,0.3,(m %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+par(mfrow =c(2,3), bg ="white")
+plot(t, Dlm[1,], type = "l", col = "blue", ylab = "z", sub = "Learner 1")
+abline( h = 5, col = "red")  ## The half of environmental limit for when n = 0
+plot(t, Dlm[2,],type = "l", col = "grey", ylab = "z", sub = "Learner 2")
+abline( h = 5, col = "red")
+plot(t, Dlm[3,],type = "l", col = "green", ylab = "z", sub = "Learner 3")
+abline( h = 5, col = "red")
+plot(t, Dlm[4,],type = "l", col = "black", ylab = "z", sub = "Learner 4")
+abline( h = 5, col = "red")
+plot(t, Dlm[5,],type = "l", col = "orange",ylab = "z", sub = "Learner 5")
+abline( h = 5, col = "red")
+plot(t, Dlm[6,],type = "l", col = "yellow",ylab = "z", sub = "Learner 6")
+abline( h = 5, col = "red")
+```
+
+Here, all learners just do individual learning and depending on the amount of initial z, The speed of evolution varies for each learners
+
+The $\overline{z}$ is computed as :
+
+```{r,fig.align="center", echo=FALSE}
+plot(t, apply(Dlm, MARGIN = 2 , mean), type = "b" , xlab = "t", ylab = "z value at population level")
+```
+
+
+
+## Evolution of trait Z for when learners copy the worst and LR = 0.3
+
+```{r,fig.align="center", echo=FALSE}
+
+SSV_1 = c(1,0,0,0,0,0)
+SSV_2 = c(1,0,0,0,0,0)
+SSV_3 = c(1,0,0,0,0,0)
+SSV_4 = c(1,0,0,0,0,0)
+SSV_5 = c(1,0,0,0,0,0)
+SSV_6 = c(1,0,0,0,0,0)
+
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:7) {  ## i for learning times (recursion)
+  
+s =  f_z(10,0.3,(m %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+par(mfrow =c(2,3), bg ="white")
+plot(t, Dlm[1,], type = "l", col = "blue", ylab = "z", sub = "Learner 1")
+abline( h = 5, col = "red")  ## The half of environmental limit for when n = 0
+plot(t, Dlm[2,],type = "l", col = "grey", ylab = "z", sub = "Learner 2")
+abline( h = 5, col = "red")
+plot(t, Dlm[3,],type = "l", col = "green", ylab = "z", sub = "Learner 3")
+abline( h = 5, col = "red")
+plot(t, Dlm[4,],type = "l", col = "black", ylab = "z", sub = "Learner 4")
+abline( h = 5, col = "red")
+plot(t, Dlm[5,],type = "l", col = "orange",ylab = "z", sub = "Learner 5")
+abline( h = 5, col = "red")
+plot(t, Dlm[6,],type = "l", col = "yellow",ylab = "z", sub = "Learner 6")
+abline( h = 5, col = "red")
+```
+
+The $\overline{z}$ is computed as :
+
+```{r,fig.align="center", echo=FALSE}
+plot(t, apply(Dlm, MARGIN = 2 , mean), type = "b" , xlab = "t", ylab = "z value at population level")
+```
+
+
+
+## Evolution of trait Z for when learners copy the best and LR = 0.3
+
+```{r,fig.align="center", echo=FALSE}
+
+SSV_1 = c(0,0,0,0,0,1)
+SSV_2 = c(0,0,0,0,0,1)
+SSV_3 = c(0,0,0,0,0,1)
+SSV_4 = c(0,0,0,0,0,1)
+SSV_5 = c(0,0,0,0,0,1)
+SSV_6 = c(0,0,0,0,0,1)
+
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:7) {
+  
+s =  f_z(10,0.3,(m %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+par(mfrow =c(2,3), bg ="white")
+plot(t, Dlm[1,], type = "l", col = "blue", ylab = "z", sub = "Learner 1")
+abline( h = 5, col = "red")  ## The half of environmental limit for when n = 0
+plot(t, Dlm[2,],type = "l", col = "grey", ylab = "z", sub = "Learner 2")
+abline( h = 5, col = "red")
+plot(t, Dlm[3,],type = "l", col = "green", ylab = "z", sub = "Learner 3")
+abline( h = 5, col = "red")
+plot(t, Dlm[4,],type = "l", col = "black", ylab = "z", sub = "Learner 4")
+abline( h = 5, col = "red")
+plot(t, Dlm[5,],type = "l", col = "orange",ylab = "z", sub = "Learner 5")
+abline( h = 5, col = "red")
+plot(t, Dlm[6,],type = "l", col = "yellow",ylab = "z", sub = "Learner 6")
+abline( h = 5, col = "red")
+```
+
+The $\overline{z}$ is computed as :
+
+```{r,fig.align="center", echo=FALSE}
+plot(t, apply(Dlm, MARGIN = 2 , mean), type = "b" , xlab = "t", ylab = "z value at population level")
+```
+
+
+## Evolution of trait Z for when learners learn randomly and LR = 0.3
+
+```{r,fig.align="center", echo=FALSE}
+
+SSV_1 = c(0,1,0,0,0,0)
+SSV_2 = c(0,0,0,1,0,0)
+SSV_3 = c(0,1,0,0,0,0)
+SSV_4 = c(1,0,0,0,0,0)
+SSV_5 = c(0,0,0,0,0,1)
+SSV_6 = c(0,0,0,1,0,0)
+
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:7) {
+  
+s =  f_z(10,0.3,(m %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+par(mfrow =c(2,3), bg ="white")
+plot(t, Dlm[1,], type = "l", col = "blue", ylab = "z", sub = "Learner 1")
+abline( h = 5, col = "red")  ## The half of environmental limit for when n = 0
+plot(t, Dlm[2,],type = "l", col = "grey", ylab = "z", sub = "Learner 2")
+abline( h = 5, col = "red")
+plot(t, Dlm[3,],type = "l", col = "green", ylab = "z", sub = "Learner 3")
+abline( h = 5, col = "red")
+plot(t, Dlm[4,],type = "l", col = "black", ylab = "z", sub = "Learner 4")
+abline( h = 5, col = "red")
+plot(t, Dlm[5,],type = "l", col = "orange",ylab = "z", sub = "Learner 5")
+abline( h = 5, col = "red")
+plot(t, Dlm[6,],type = "l", col = "yellow",ylab = "z", sub = "Learner 6")
+abline( h = 5, col = "red")
+```
+
+The $\overline{z}$ is computed as :
+
+```{r,fig.align="center", echo=FALSE}
+plot(t, apply(Dlm, MARGIN = 2 , mean), type = "b" , xlab = "t", ylab = "z value at population level")
+```
+
+
+#  Effective learning
+
+For all learning strategies, we see various patterns but none of them converges to zero. In the random learning, we see that some learners have had some bad choices ($N$) but they have just made the evolution more fluctuational but have not stopped it (i.e, damped it to 0) and when times of learning get more and more, we see all patterns converge to highest limit ($E$). We can see the trajectory of evolution by random learning in a longer time (t = 70) as following plot.
+
+```{r,fig.align="center", echo=FALSE}
+
+SSV_1 = c(0,1,0,0,0,0)
+SSV_2 = c(0,0,0,1,0,0)
+SSV_3 = c(0,1,0,0,0,0)
+SSV_4 = c(1,0,0,0,0,0)
+SSV_5 = c(0,0,0,0,0,1)
+SSV_6 = c(0,0,0,1,0,0)
+
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:70) {
+  
+s =  f_z(10,0.3,(m %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+par(mfrow =c(2,3), bg ="white")
+plot(t, Dlm[1,], type = "l", col = "blue", ylab = "z", sub = "Learner 1")
+abline( h = 5, col = "red")  ## The half of environmental limit for when n = 0
+plot(t, Dlm[2,],type = "l", col = "grey", ylab = "z", sub = "Learner 2")
+abline( h = 5, col = "red")
+plot(t, Dlm[3,],type = "l", col = "green", ylab = "z", sub = "Learner 3")
+abline( h = 5, col = "red")
+plot(t, Dlm[4,],type = "l", col = "black", ylab = "z", sub = "Learner 4")
+abline( h = 5, col = "red")
+plot(t, Dlm[5,],type = "l", col = "orange",ylab = "z", sub = "Learner 5")
+abline( h = 5, col = "red")
+plot(t, Dlm[6,],type = "l", col = "yellow",ylab = "z", sub = "Learner 6")
+abline( h = 5, col = "red")
+
+
+```
+
+There is a mathematical structure underlying this phenomenon. To understand it we re-write Eq(2) as Eq(4):
+
+```{=tex}
+\begin{equation}
+\tag{Eq(4)}
+F(O_{I}(T) \mid LR_{I}, O_{0} ) = ( \frac{ 2 * lim }{1 + \frac{1} { e ^ {(LR_{I} * (N_{I}(T) - X_{0}))}   }} ) - lim
+\end{equation}
+```
+
+
+In our Equation, For any value of $LR_{I}$ and $O_{0}$ :
+
+if $F(O_{I}(T)) > O_{I}(T)$ ,the trait z will keep evolving (effective learning or above fixed point) 
+if $F(O_{I}(T)) = O_{I}(T)$ ,the trait z wilL remain constant (neutral learning or on fixed point)
+if $F(O_{I}(T)) < O_{I}(T)$ ,the trait z wilL deteriorate (ineffective learning or below fixed point).
+
+
+
+The $\overline{z}$ is computed as :
+
+```{r,fig.align="center", echo=FALSE}
+plot(t, apply(Dlm, MARGIN = 2 , mean), type = "b" , xlab = "t", ylab = "z value at population level")
+```
+
+
+
+
+## Evolution of trait Z for when learners just do learn individually and LR = 0.3 [ effective learning ]
+
+```{r,fig.align="center", echo=FALSE}
+SSV_1 = cbind(1,0,0,0,0,0)
+SSV_2 = cbind(0,1,0,0,0,0)
+SSV_3 = cbind(0,0,1,0,0,0)
+SSV_4 = cbind(0,0,0,1,0,0)
+SSV_5 = cbind(0,0,0,0,1,0)
+SSV_6 = cbind(0,0,0,0,0,1)
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:7) {
+  
+s =  f_z(10,0.3,(m %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+par(mfrow =c(2,3), bg ="white")
+plot(t, Dlm[1,], type = "l", col = "blue", ylab = "z", sub = "Learner 1")
+abline( h = 5, col = "red")  ## The half of environmental limit for when n = 0
+plot(t, Dlm[2,],type = "l", col = "grey", ylab = "z", sub = "Learner 2")
+abline( h = 5, col = "red")
+plot(t, Dlm[3,],type = "l", col = "green", ylab = "z", sub = "Learner 3")
+abline( h = 5, col = "red")
+plot(t, Dlm[4,],type = "l", col = "black", ylab = "z", sub = "Learner 4")
+abline( h = 5, col = "red")
+plot(t, Dlm[5,],type = "l", col = "orange",ylab = "z", sub = "Learner 5")
+abline( h = 5, col = "red")
+plot(t, Dlm[6,],type = "l", col = "yellow",ylab = "z", sub = "Learner 6")
+abline( h = 5, col = "red")
+```
+
+Because we have:
+
+```{=tex}
+\begin{equation}
+\tag{}
+
+F(0.5) > 0.5;
+
+F(1) > 1;
+
+F(1.5) > 1.5;
+
+F(2) v 2;
+
+F(2.5) > 2.5;
+
+F(3) v 3
+
+\end{equation}
+```
+
+
+```{r, include=FALSE}
+f_z(10,0.3,0.5,0) > 0.5
+f_z(10,0.3,1,0) > 1
+f_z(10,0.3,1.5,0) > 1.5
+f_z(10,0.3,2.5 ,0) > 2.5
+f_z(10,0.3,3,0) > 3
+```
+
+
+The $\overline{z}$ is computed as :
+
+```{r,fig.align="center", echo=FALSE}
+plot(t, apply(Dlm, MARGIN = 2 , mean), type = "b" , xlab = "t", ylab = "z value at population level")
+```
+
+
+## Evolution of trait Z for when learners just do learn individually and LR = 0.2 [ ineffective learning ]
+
+
+```{r,fig.align="center", echo=FALSE}
+SSV_1 = cbind(1,0,0,0,0,0)
+SSV_2 = cbind(0,1,0,0,0,0)
+SSV_3 = cbind(0,0,1,0,0,0)
+SSV_4 = cbind(0,0,0,1,0,0)
+SSV_5 = cbind(0,0,0,0,1,0)
+SSV_6 = cbind(0,0,0,0,0,1)
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:7) {
+  
+s =  f_z(10,0.2,(m %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+par(mfrow =c(2,3), bg ="white")
+plot(t, Dlm[1,], type = "l", col = "blue", ylab = "z", sub = "Learner 1")
+abline( h = 5, col = "red")  ## The half of environmental limit for when n = 0
+plot(t, Dlm[2,],type = "l", col = "grey", ylab = "z", sub = "Learner 2")
+abline( h = 5, col = "red")
+plot(t, Dlm[3,],type = "l", col = "green", ylab = "z", sub = "Learner 3")
+abline( h = 5, col = "red")
+plot(t, Dlm[4,],type = "l", col = "black", ylab = "z", sub = "Learner 4")
+abline( h = 5, col = "red")
+plot(t, Dlm[5,],type = "l", col = "orange",ylab = "z", sub = "Learner 5")
+abline( h = 5, col = "red")
+plot(t, Dlm[6,],type = "l", col = "yellow",ylab = "z", sub = "Learner 6")
+abline( h = 5, col = "red")
+```
+
+Because we have:
+
+
+```{=tex}
+\begin{equation}
+\tag{}
+
+F(0.5) < 0.5;
+
+F(1) < 1;
+
+F(1.5) < 1.5;
+
+F(2) < 2;
+
+F(2.5) < 2.5;
+
+F(3) < 3
+
+\end{equation}
+
+```
+
+
+```{r, include=FALSE}
+f_z(10,0.2,0.5,0) < 0.5
+f_z(10,0.2,1,0) < 1
+f_z(10,0.2,1.5,0) < 1.5
+f_z(10,0.2,2.5 ,0) < 2.5
+f_z(10,0.2,3,0) < 3
+```
+
+The $\overline{z}$ is computed as :
+
+```{r,fig.align="center", echo=FALSE}
+plot(t, apply(Dlm, MARGIN = 2 , mean), type = "b" , xlab = "t", ylab = "z value at population level")
+```
+
+
+
+## Evolution of trait Z for when learners learn randomly and LR = 0.2 [ ineffective learning ]
+
+
+```{r,fig.align="center", echo=FALSE}
+
+SSV_1 = c(0,1,0,0,0,0)
+SSV_2 = c(0,0,0,1,0,0)
+SSV_3 = c(0,1,0,0,0,0)
+SSV_4 = c(1,0,0,0,0,0)
+SSV_5 = c(0,0,0,0,0,1)
+SSV_6 = c(0,0,0,1,0,0)
+
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:1000) {
+  
+s =  f_z(10,0.2,(m %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+par(mfrow =c(2,3), bg ="white")
+plot(t, Dlm[1,], type = "l", col = "blue", ylab = "z", sub = "Learner 1")
+abline( h = 5, col = "red")  ## The half of environmental limit for when n = 0
+plot(t, Dlm[2,],type = "l", col = "grey", ylab = "z", sub = "Learner 2")
+abline( h = 5, col = "red")
+plot(t, Dlm[3,],type = "l", col = "green", ylab = "z", sub = "Learner 3")
+abline( h = 5, col = "red")
+plot(t, Dlm[4,],type = "l", col = "black", ylab = "z", sub = "Learner 4")
+abline( h = 5, col = "red")
+plot(t, Dlm[5,],type = "l", col = "orange",ylab = "z", sub = "Learner 5")
+abline( h = 5, col = "red")
+plot(t, Dlm[6,],type = "l", col = "yellow",ylab = "z", sub = "Learner 6")
+abline( h = 5, col = "red")
+```
+
+
+The $\overline{z}$ is computed as :
+
+```{r,fig.align="center", echo=FALSE}
+plot(t, apply(Dlm, MARGIN = 2 , mean), type = "b" , xlab = "t", ylab = "z value at population level")
+```
+
+
+
+# Implications and importance of population diversity
+
+For a trait to evolve, the learners have to satisfy  effectiveness condition. 
+This condition implies that 1) the amount of information that a learner is exposed to and 2) the number of times he tries to learn that information are not sufficient for a trait to evolve because if there is not any effective learning rate, effectiveness condition will not be met and the trait will stay unchanged or gradually deteriorate (even after a long time). For a diverse population, when there are various rates of learning, those who remain above fixed point will keep the trait evolving. Maybe, it is what that makes the population density and diversity so important in the evolution of a trait.
+
+# Analytical Caluculation of example II (non-Homogenous cognitive structure)
+
+Suppose we have all parameters of Example I, except the equality of $LR$ for all learners. We have the following learning rates:
+
+$LR_{1} = 0.1$
+
+$LR_{2} = 0.15$
+
+$LR_{3} = 0.2$
+
+$LR_{4} =0.25$
+
+$LR_{5} = 0.3$
+
+$LR_{6} = 0.35$
+
+## Evolution of trait Z for when learners just do learn individually with different learning rates
+
+```{r,fig.align="center", echo=FALSE}
+
+SSV_1 = c(1,0,0,0,0,0)
+SSV_2 = c(0,1,0,0,0,0)
+SSV_3 = c(0,0,1,0,0,0)
+SSV_4 = c(0,0,0,1,0,0)
+SSV_5 = c(0,0,0,0,1,0)
+SSV_6 = c(0,0,0,0,0,1)
+
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:15) {
+  
+s[1] =  f_z(10,0.1,(m[1,] %*% s),0)
+s[2] =  f_z(10,0.15,(m[2,] %*% s),0)
+s[3] =  f_z(10,0.2,(m[3,] %*% s),0)
+s[4] =  f_z(10,0.25,(m[4,] %*% s),0)
+s[5] =  f_z(10,0.3,(m[5,] %*% s),0)
+s[6] =  f_z(10,0.35,(m[6,] %*% s),0)
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+par(mfrow =c(2,3), bg ="white")
+plot(t, Dlm[1,], type = "l", col = "blue", ylab = "z", sub = "Learner 1")
+abline( h = 5, col = "red")  ## The half of environmental limit for when n = 0
+plot(t, Dlm[2,],type = "l", col = "grey", ylab = "z", sub = "Learner 2")
+abline( h = 5, col = "red")
+plot(t, Dlm[3,],type = "l", col = "green", ylab = "z", sub = "Learner 3")
+abline( h = 5, col = "red")
+plot(t, Dlm[4,],type = "l", col = "black", ylab = "z", sub = "Learner 4")
+abline( h = 5, col = "red")
+plot(t, Dlm[5,],type = "l", col = "orange",ylab = "z", sub = "Learner 5")
+abline( h = 5, col = "red")
+plot(t, Dlm[6,],type = "l", col = "yellow",ylab = "z", sub = "Learner 6")
+abline( h = 5, col = "red")
+
+
+```
+
+Here those who remain above fixed point will have an evolution of trait $z$
+
+The $\overline{z}$ is computed as :
+
+```{r,fig.align="center", echo=FALSE}
+plot(t, apply(Dlm, MARGIN = 2 , mean), type = "b" , xlab = "t", ylab = "z value at population level")
+```
+
+## Evolution of trait Z for when learners copy the worst with different learning rates
+
+```{r,fig.align="center", echo=FALSE}
+
+SSV_1 = c(1,0,0,0,0,0)
+SSV_2 = c(1,0,0,0,0,0)
+SSV_3 = c(1,0,0,0,0,0)
+SSV_4 = c(1,0,0,0,0,0)
+SSV_5 = c(1,0,0,0,0,0)
+SSV_6 = c(1,0,0,0,0,0)
+
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:20) {
+  
+s[1] =  f_z(10,0.1,(m[1,] %*% s),0)
+s[2] =  f_z(10,0.15,(m[2,] %*% s),0)
+s[3] =  f_z(10,0.2,(m[3,] %*% s),0)
+s[4] =  f_z(10,0.25,(m[4,] %*% s),0)
+s[5] =  f_z(10,0.3,(m[5,] %*% s),0)
+s[6] =  f_z(10,0.35,(m[6,] %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+par(mfrow =c(2,3), bg ="white")
+plot(t, Dlm[1,], type = "l", col = "blue", ylab = "z", sub = "Learner 1")
+abline( h = 5, col = "red")  ## The half of environmental limit for when n = 0
+plot(t, Dlm[2,],type = "l", col = "grey", ylab = "z", sub = "Learner 2")
+abline( h = 5, col = "red")
+plot(t, Dlm[3,],type = "l", col = "green", ylab = "z", sub = "Learner 3")
+abline( h = 5, col = "red")
+plot(t, Dlm[4,],type = "l", col = "black", ylab = "z", sub = "Learner 4")
+abline( h = 5, col = "red")
+plot(t, Dlm[5,],type = "l", col = "orange",ylab = "z", sub = "Learner 5")
+abline( h = 5, col = "red")
+plot(t, Dlm[6,],type = "l", col = "yellow",ylab = "z", sub = "Learner 6")
+abline( h = 5, col = "red")
+```
+
+There is an interesting pattern here, we know that learners (4,5,6) Individually can satisfy the fixed point condition , but since they have continuously copied a learner ( the worst one in terms of initial $z$ ) who himself dose not satisfy the fixed pint condition, the trait $z$ has deteriorated in them.
+
+The $\overline{z}$ is computed as :
+
+```{r,fig.align="center", echo=FALSE}
+
+plot(t, apply(Dlm, MARGIN = 2 , mean), type = "b" , xlab = "t", ylab = "z value at population level")
+
+```
+
+## Evolution of trait Z for when learners copy the best with different learning rates
+
+```{r,fig.align="center", echo=FALSE}
+
+SSV_1 = c(0,0,0,0,0,1)
+SSV_2 = c(0,0,0,0,0,1)
+SSV_3 = c(0,0,0,0,0,1)
+SSV_4 = c(0,0,0,0,0,1)
+SSV_5 = c(0,0,0,0,0,1)
+SSV_6 = c(0,0,0,0,0,1)
+
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:20) {
+  
+s[1] =  f_z(10,0.1,(m[1,] %*% s),0)
+s[2] =  f_z(10,0.15,(m[2,] %*% s),0)
+s[3] =  f_z(10,0.2,(m[3,] %*% s),0)
+s[4] =  f_z(10,0.25,(m[4,] %*% s),0)
+s[5] =  f_z(10,0.3,(m[5,] %*% s),0)
+s[6] =  f_z(10,0.35,(m[6,] %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+par(mfrow =c(2,3), bg ="white")
+plot(t, Dlm[1,], type = "l", col = "blue", ylab = "z", sub = "Learner 1")
+abline( h = 5, col = "red")  ## The half of environmental limit for when n = 0
+plot(t, Dlm[2,],type = "l", col = "grey", ylab = "z", sub = "Learner 2")
+abline( h = 5, col = "red")
+plot(t, Dlm[3,],type = "l", col = "green", ylab = "z", sub = "Learner 3")
+abline( h = 5, col = "red")
+plot(t, Dlm[4,],type = "l", col = "black", ylab = "z", sub = "Learner 4")
+abline( h = 5, col = "red")
+plot(t, Dlm[5,],type = "l", col = "orange",ylab = "z", sub = "Learner 5")
+abline( h = 5, col = "red")
+plot(t, Dlm[6,],type = "l", col = "yellow",ylab = "z", sub = "Learner 6")
+abline( h = 5, col = "red")
+```
+
+There is also an interesting pattern here, we know that learners (1,2,3) individually can not satisfy effectiveness condition ,but since they have continuously copied the best guy ( the best one in terms of initial $z$ ) who himself satisfies effectiveness condition, the trait $z$ has increased in them. **It means, how important the selection can be in shaping the evolution because humans can inherit (and acquire) adaptive information that they would not otherwise generate.**
+
+The $\overline{z}$ is computed as :
+
+```{r,fig.align="center", echo=FALSE}
+
+plot(t, apply(Dlm, MARGIN = 2 , mean), type = "b" , xlab = "t", ylab = "z value at population level")
+
+```
+
+## Evolution of trait Z for when learners copy randomly with different learning rates
+
+There is again another interesting pattern here. It shows even one simple selection difference can change the course of evolution for two different societies. In the following plot, the evolution of trait $z$ for individuals of two different societies has been shown. In the selection process, these two societies are the same except for $learner 1$. In one society, $learner 1$. copies $learner 2$ but in another society, $learner 1$ prefers to copy the $learner 4$.
+
+```{r,fig.align="center", echo=FALSE}
+
+SSV_1 = c(0,1,0,0,0,0) ##
+SSV_2 = c(0,0,0,1,0,0)
+SSV_3 = c(0,1,0,0,0,0)
+SSV_4 = c(1,0,0,0,0,0)
+SSV_5 = c(0,0,0,0,0,1)
+SSV_6 = c(0,0,0,1,0,0)
+E = 10
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:50) {
+  
+s[1] =  f_z(E,0.1,(m[1,] %*% s),0)
+s[2] =  f_z(E,0.15,(m[2,] %*% s),0)
+s[3] =  f_z(E,0.2,(m[3,] %*% s),0)
+s[4] =  f_z(E,0.25,(m[4,] %*% s),0)
+s[5] =  f_z(E,0.3,(m[5,] %*% s),0)
+s[6] =  f_z(E,0.35,(m[6,] %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+
+
+Society_1 = Dlm
+
+plot(c(1, length(t)),c(-5, E + 5), type = "n", xlab ="t", ylab = "Evolution of trait z",
+       sub = " First society with solid line and second society with dotted line" )
+abline( h = E, col = "red")  ## The half of environmental limit for when n = 0
+lines(t, Dlm[1,], type = "l", col = "blue", ylab = "z", sub = "Fig(1)")
+lines(t, Dlm[2,],type = "l", col = "grey", ylab = "z", sub = "Fig(2)")
+lines(t, Dlm[3,],type = "l", col = "green", ylab = "z", sub = "Fig(3)")
+lines(t, Dlm[4,],type = "l", col = "black", ylab = "z", sub = "Fig(4)")
+lines(t, Dlm[5,],type = "l", col = "orange",ylab = "z", sub = "Fig(5)")
+lines(t, Dlm[6,],type = "l", col = "yellow",ylab = "z", sub = "Fig(6)")
+
+
+######################################
+
+
+SSV_1 = c(0,0,0,0,1,0) ##
+SSV_2 = c(0,0,0,1,0,0)
+SSV_3 = c(0,1,0,0,0,0)
+SSV_4 = c(1,0,0,0,0,0)
+SSV_5 = c(0,0,0,0,0,1)
+SSV_6 = c(0,0,0,1,0,0)
+
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:50) {
+  
+s[1] =  f_z(E,0.1,(m[1,] %*% s),0)
+s[2] =  f_z(E,0.15,(m[2,] %*% s),0)
+s[3] =  f_z(E,0.2,(m[3,] %*% s),0)
+s[4] =  f_z(E,0.25,(m[4,] %*% s),0)
+s[5] =  f_z(E,0.3,(m[5,] %*% s),0)
+s[6] =  f_z(E,0.35,(m[6,] %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+
+
+lines(t, Dlm[1,], type = "b", col = "blue", ylab = "z", sub = "Fig(1)")
+lines(t, Dlm[2,],type = "b", col = "grey", ylab = "z", sub = "Fig(2)")
+lines(t, Dlm[3,],type = "b", col = "green", ylab = "z", sub = "Fig(3)")
+lines(t, Dlm[4,],type = "b", col = "black", ylab = "z", sub = "Fig(4)")
+lines(t, Dlm[5,],type = "b", col = "orange",ylab = "z", sub = "Fig(5)")
+lines(t, Dlm[6,],type = "b", col = "yellow",ylab = "z", sub = "Fig(6)")
+
+Society_2 = Dlm
+
+#Dlm
+
+```
+
+The $\overline{z}$ for two societies is computed as :
+
+```{r,fig.align="center", echo=FALSE}
+plot(c(1, length(t)), c(-5, 10), type = "n", xlab = "t", ylab = expression(bar(Z)),
+     sub = "")
+
+lines(t, apply(Society_1, MARGIN = 2, mean), type = "l", xlab = "", ylab = "")
+lines(t, apply(Society_2, MARGIN = 2, mean), type = "b", xlab = "", ylab = "")
+abline(h = E, col = "red")  ## The half of environmental limit for when n = 0
+
+legend("bottomright", legend = c("Society A", "Society B", "Environmental Limit"),
+       col = c("black", "black", "red"), lty = c(1, 0, 1), pch = c(NA, 1, NA))
+
+
+
+```
+
+Analysis of source selection matrices of two societies.
+
+```{r,include=FALSE}
+#install.packages('igraph')
+library(igraph)
+  
+    learner_1 = c(0,0,0,1,0,0)
+    learner_2 = c(1,0,1,0,0,0)
+     learner_3 = c(0,0,0,0,0,0)
+      learner_4 = c(0,1,0,0,0,1)
+       learner_5 = c(0,0,0,0,0,0)
+        learner_6 = c(0,0,0,0,1,0)
+ 
+  G = c(learner_1 ,learner_2 ,learner_3 ,learner_4 ,learner_5 ,learner_6)
+  G = matrix(G,6,6, byrow = TRUE)
+   colnames(G) = rownames(G) = c("learner_1", "learner_2", "learner_3", "learner_4","learner_5", "learner_6" )
+```
+
+
+
+```{r,include=FALSE}
+#install.packages('igraph')
+library(igraph)
+  
+    learner_1 = c(0,0,0,1,0,0)
+    learner_2 = c(0,0,1,0,0,0)
+     learner_3 = c(0,0,0,0,0,0)
+      learner_4 = c(0,1,0,0,0,1)
+       learner_5 = c(1,0,0,0,0,0)
+        learner_6 = c(0,0,0,0,1,0)
+ 
+  Gg = c(learner_1 ,learner_2 ,learner_3 ,learner_4 ,learner_5 ,learner_6)
+  Gg = matrix(Gg,6,6, byrow = TRUE)
+   colnames(Gg) = rownames(Gg) = c("learner_1", "learner_2", "learner_3", "learner_4","learner_5", "learner_6" )
+```
+
+```{r, fig.align="center", echo = FALSE}
+ par(mfrow =c(1,2), bg ="white")
+set.seed(3)
+network <- graph_from_adjacency_matrix(G)
+network_2 <- graph_from_adjacency_matrix(Gg)
+plot(network, sub = "First society")  
+plot(network_2, sub = "Second society")  
+  
+```
+
+
+As it can be seen in second society, all three effective learners (4,5,6) are active in the cycle.
+
+
+## Environmental limit and Population Size (Case I)
+There is a society of N people where 
+         People have selected the best cultural model for imitation of Z.
+         Henrich model is black line .Our model is green line and environmental limit is in red line ( E = 20)
+We want to test two cases 
+Case I: what will happen at K = 1.25.
+Case II: what will happen at K = 2.
+
+```{r, fig.align="center", echo = FALSE}
+E = 20
+alpha = 5
+beta = 4
+O_1 = seq(0,9,0.01)
+O = c(O_1)
+N = 1:length(O)
+y = Extended_z(E,(beta / alpha),O, 0)
+H =  Henrich_f(alpha,beta, N)
+plot(c(-3, range(N)[2]),c(-5, 40), type = "n", xlab ="N", ylab = expression(bar(Z)) )
+lines(N,y, col = "green")
+lines(N,H) 
+abline(h = E, col = "red")
+legend("topright", legend = c("Proposed Model", "Henrich Model", "Environmental Limit"),
+       col = c("green","black", "red"), lty = c(1, 1, 1), pch = c(NA, NA, NA))
+
+```
+In Henrich model, as N tends infinity, Z  tends to infinity. In our model, as N tends infinity, Z increases and finally converges to a E. 
+
+
+## Impact of Learning rate (Case II)
+
+```{r, fig.align="center", echo = FALSE}
+alpha = 8
+beta = 4
+y = Extended_z(E,(beta / alpha),O, 0)
+H =  Henrich_f(alpha,beta, N)
+plot(c(-3, range(N)[2]),c(-5, 40), type = "n", xlab ="N", ylab = expression(bar(Z)))
+lines(N,y, col = "green")
+lines(N,H)
+abline(h = E, col = "red")
+legend("topright", legend = c("Proposed Model", "Henrich Model", "Environmental Limit"),
+       col = c("green","black", "red"), lty = c(1, 1, 1), pch = c(NA, NA, NA))
+```
+
+In both models, Z has become slower because of higher K .  
+
+## Impact of selection strategy
+
+What will happen in case I, if all people select the most ineffective cultural model at N = 900?
+Henrich is a population level model where people just select individual_h (the best), so we can not get such a result from it.
+But in our model we can answer this question when people just select individual_w(the worst).
+
+
+
+```{r, fig.align="center", echo = FALSE}
+
+E = 20
+alpha = 5
+beta = 4
+O_1 = seq(0,8,0.01)
+O_2 = seq(8,1, -0.01)
+#O_3 = seq(1,4,0.01)
+#O_4 = rep(4,300)
+#O_5 = seq(4,8,0.01)
+O = c(O_1,O_2)
+N = 1:length(O)
+y = Extended_z(E,(beta / alpha),O, 0)
+H =  Henrich_f(alpha,beta, N)
+plot(c(-3, range(N)[2]),c(-5, 40), type = "n", xlab ="N", ylab = expression(bar(Z)))
+lines(N,y, col = "green")
+lines(N,H)
+abline(h = E, col = "red")
+abline(v = length(O_1), col = "blue")
+abline(v = length(O_1) + length(O_2) , col = "blue")
+legend("topleft", legend = c("Proposed Model", "Henrich Model", "Environmental Limit"),
+       col = c("green","black", "red"),, lty = c(1, 1, 1), pch = c(NA, NA, NA))
+
+```
+
+
+If all people imitate the worst one, the Z will converge to zero and society will lose the trait even if N increases.
+
+This might happen, for example: if, as a population grows people spend less time with others on average, they might also switch from imitating based on hard-to-observe aspects of skill to imitating based on more easy-to-observe and flashy behavioral cues.
+
+
+## Social structure of learning
+
+
+```{r,fig.align="center", echo=FALSE}
+
+SSV_1 = c(0,1,0,0,0,0) ##
+SSV_2 = c(0,0,0,1,0,0)
+SSV_3 = c(0,1,0,0,0,0)
+SSV_4 = c(1,0,0,0,0,0)
+SSV_5 = c(0,0,0,0,0,1)
+SSV_6 = c(0,0,0,1,0,0)
+E = 10
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:50) {
+  
+s[1] =  f_z(E,0.1,(m[1,] %*% s),0)
+s[2] =  f_z(E,0.15,(m[2,] %*% s),0)
+s[3] =  f_z(E,0.2,(m[3,] %*% s),0)
+s[4] =  f_z(E,0.25,(m[4,] %*% s),0)
+s[5] =  f_z(E,0.3,(m[5,] %*% s),0)
+s[6] =  f_z(E,0.35,(m[6,] %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+
+
+Society_1 = Dlm
+
+plot(c(1, length(t)),c(-5, E + 5), type = "n", xlab ="t", ylab = "Evolution of trait z",
+       sub = " First society with solid line and second society with dotted line" )
+abline( h = E, col = "red")  ## The half of environmental limit for when n = 0
+lines(t, Dlm[1,], type = "l", col = "blue", ylab = "z", sub = "Fig(1)")
+lines(t, Dlm[2,],type = "l", col = "grey", ylab = "z", sub = "Fig(2)")
+lines(t, Dlm[3,],type = "l", col = "green", ylab = "z", sub = "Fig(3)")
+lines(t, Dlm[4,],type = "l", col = "black", ylab = "z", sub = "Fig(4)")
+lines(t, Dlm[5,],type = "l", col = "orange",ylab = "z", sub = "Fig(5)")
+lines(t, Dlm[6,],type = "l", col = "yellow",ylab = "z", sub = "Fig(6)")
+
+
+######################################
+
+
+SSV_1 = c(0,0,0,0,1,0) ##
+SSV_2 = c(0,0,0,1,0,0)
+SSV_3 = c(0,1,0,0,0,0)
+SSV_4 = c(1,0,0,0,0,0)
+SSV_5 = c(0,0,0,0,0,1)
+SSV_6 = c(0,0,0,1,0,0)
+
+m =  rbind(SSV_1, SSV_2, SSV_3, SSV_4, SSV_5, SSV_6 )
+s = LV_t1 
+t <- c()
+z_1 = c()
+z_2 = c()
+z_3 = c()
+z_4 = c()
+z_5 = c()
+z_6 = c()
+
+for (i in 1:50) {
+  
+s[1] =  f_z(E,0.1,(m[1,] %*% s),0)
+s[2] =  f_z(E,0.15,(m[2,] %*% s),0)
+s[3] =  f_z(E,0.2,(m[3,] %*% s),0)
+s[4] =  f_z(E,0.25,(m[4,] %*% s),0)
+s[5] =  f_z(E,0.3,(m[5,] %*% s),0)
+s[6] =  f_z(E,0.35,(m[6,] %*% s),0)
+
+t = c(t,i)
+z_1 = c(z_1, s[1])
+z_2 = c(z_2, s[2])
+z_3 = c(z_3, s[3])
+z_4 = c(z_4, s[4])
+z_5 = c(z_5, s[5])
+z_6 = c(z_6, s[6])
+}
+
+Dlm = cbind( LV_t1 ,rbind( z_1, z_2, z_3,  z_4, z_5,z_6))  
+
+t = 1:dim(Dlm)[2]
+
+
+lines(t, Dlm[1,], type = "b", col = "blue", ylab = "z", sub = "Fig(1)")
+lines(t, Dlm[2,],type = "b", col = "grey", ylab = "z", sub = "Fig(2)")
+lines(t, Dlm[3,],type = "b", col = "green", ylab = "z", sub = "Fig(3)")
+lines(t, Dlm[4,],type = "b", col = "black", ylab = "z", sub = "Fig(4)")
+lines(t, Dlm[5,],type = "b", col = "orange",ylab = "z", sub = "Fig(5)")
+lines(t, Dlm[6,],type = "b", col = "yellow",ylab = "z", sub = "Fig(6)")
+
+Society_2 = Dlm
+
+#Dlm
+
+```
+
+The $\overline{z}$ for two societies is computed as :
+
+```{r,fig.align="center", echo=FALSE}
+ plot(c(1, length(t)),c(-5, 10), type = "n", xlab ="t", ylab = "Evolution of trait z",
+       sub = " First society with solid line and second society with dotted line" )
+lines(t, apply(Society_1, MARGIN = 2 , mean), type = "l" , xlab = "t", ylab = "z value at population level")
+lines(t, apply(Society_2, MARGIN = 2 , mean), type = "b" , xlab = "t", ylab = "z value at population level")
+abline( h = E, col = "red")  ## The half of environmental limit for when n = 0
+
+```
+
+
+
+
+
+
+
+## Appendix A: Henrich's model.
+
+
+An overview of this model should be presented:
+Limitations of this model should be listed.
+
+
+1: The understanding of the loss space and adaptive space in relative to demographic and cognitive factors
+
+```{r, fig.align="center", echo = FALSE}
+# Here we define the alpha and beta
+a <- seq(1,10,0.01)/13   ### The difficulty of learning a trait
+b <- seq(10,1,-0.01) /3.8  ### the extend to which learners can guess on a trait
+
+
+s_f <- function(alpha, beta) {
+  
+ exp( (alpha / beta) - 0.577)
+  
+}
+ 
+plot((a/b), s_f(a,b), col ="red", type ="l", xlab ="alpha / beta", ylab = "N")
+text(1,6, "Adaptive space", col = "red", adj = c(1, 1))
+text(2.5,2, "Loss space", col = "red", adj = c(1, 1))
+
+```
+
+
+2: The understanding of a trait evolution in relative to demographic and cognitive factors
+
+ 
+```{r, fig.align="center", echo = FALSE}
+
+z_f <- function (alpha, beta, N) {
+  - (alpha) + (beta * (0.577 + log(N)))
+}
+n <- c(1:100)
+
+plot(n, z_f(2, 1.1, n),xlab ="Number of social learners", 
+     ylab = "Average skill of a society after imitation of Z" )
+lines(n,z_f(3,0.8,n))  
+abline(h = 0, col = "blue")
+abline(v = 24, col = "blue")
+abline(v = 80, col = "blue")
+text(50,3, "alpha / beta = 2/1.1", col = "red", adj = c(1, 1))
+text(50, 0.5, "alpha / beta = 3/0.8", col = "red", adj = c(1, 1))
+
+```
+
+
+
+## Appendix B:The Structure of Strimling's model
+
+
+An overview of this model should be presented:
+Limitations of this model should be listed.
+
+
+```{r, fig.align="center", echo = FALSE}
+# We have three states of cultural trait as N, V, Z with  following features
+
+## Functions
+Success_index = function (D, R) { D / ( 1 - R) }
+trnasi_p = function(x,y) { y[1]*(1 - x[2])  }
+
+### Inputs
+# Note: R and D are independent
+tf = 0.5
+D_N = 0; R_N = 0 ; N = c(D_N, R_N  )  # Naive 
+D_V = 0.8; R_V = 0.2; V = c(D_V, R_V ) # trait V
+D_Z = 0.3; R_Z = 0.9 ; Z = c(D_Z, R_Z ) # Trait Z
+
+#### Success indices
+W_N = Success_index(D_N,R_N )
+W_V = Success_index(D_V,R_V )
+W_Z = Success_index(D_Z,R_Z )
+###Checking Success index 
+#W_N
+#W_V
+#W_Z
+#### Checking trabsition probabilities for some give states
+#trnasi_p(N, V)
+#trnasi_p(N, Z)
+
+## Transition Matrix Elements (Columun Input)
+E_1 =  1 - ( tf * trnasi_p(N, V)  ) - ( tf * trnasi_p(N, Z))    
+E_2 = tf * (trnasi_p(N, V))
+E_3 = tf * trnasi_p(N, Z)
+E_4 =  tf * trnasi_p(V, N)
+E_5 = 1 - ( tf * trnasi_p(V, N)  ) -( tf *  trnasi_p(V, Z) )
+E_6 = tf * trnasi_p(V, Z)
+E_7 = tf * trnasi_p(Z, N)
+E_8 = tf * trnasi_p(Z, V)
+E_9 = 1 - ( tf * trnasi_p(Z, N)  ) - (tf * trnasi_p(Z, V) )
+ 
+
+
+transi_m = matrix(c( E_1,E_2 ,E_3 ,E_4 ,E_5 ,E_6 ,E_7 ,E_8 , E_9)  ,3,3   )
+#print(transi_m )
+
+initial_vector = rbind(1, 0, 0)
+#print(initial_vector )
+
+### Running
+m = transi_m
+s = initial_vector
+t = c() ; n <- c() ; v = c(); z = c() 
+
+# Recursive Function for 100 learning opportunities
+for ( i in 1:100  ) {      
+
+  s = m %*% s 
+
+  t = c(t,i)
+  n <- c(n, s[1]) ### This gathers N
+  v = c(v, s[2]) ### This gathers V
+  z = c(z, s[3]) ### This gathers Z
+  }
+
+plot(c(0, 50),c(0, 1), type = "n", xlab ="Time", ylab = "Frequency")
+points(t, n, type  = "b",pch=1, col = 1)
+points(t, v, type = "b",pch = 1, col = 2)
+points(t,z, type = "b",pch = 1, col = 3)
+legend("topleft", legend = c(   paste("N :","D =",N[1] ,",", "R =" ,N[2])  , 
+                                paste("V :","D =",V[1] ,",", "R =" ,V[2])  ,
+                                paste("Z :","D =",Z[1] ,",", "R =" ,Z[2]) )  , col=1:3, pch=1) 
+
+
+```
+
+
+
+## Appendix C: Our model structure
+
+## Appendix F: Our model as a superset of Henrich's model
+
+## Appendix D:  Cultural Selection as a social-cognitive function (Cognitive Filter)
+
+## Some themes in mind
+
+Empirical testing
+
+Diversification and branching
+
+PDF of original equation for distribution of trait.
+
+Mutation effects in learning.
+
+spatial component in selection process
+
+Fitness elaboration
+
+Probabilistic selection
+
+Multiple traits competition and compromise
+
+Environmental stochasticity
+
+dimensionality
+
+....
+
+
+$$
+\begin{equation}
+\tag{Eq(2)}
+\Delta Z_{it} = ( \frac{ E * e ^{K_{i}(o_{i}(t) - Z_{0})} - E  } {1 +  e ^{K_{i}(o_{i}(t) - Z_{0})} } )
+\end{equation}
+$$
+
+
+$$
+\overline{Z_{t+1}} =\frac{ \sum_{i=1}^{N} {Z_{it}} } {N }
+$$
+
+$$
+\begin{equation}
+\tag{Eq(2)}
+\Delta Z_{it} = ( \frac{ Environment * e ^{Cognitive_{i}(SelectedZ_{i}(t) - CriticalZ_{0})} - Environment  } {1 +  e ^{Cognitive_{i}(SelectedZ_{i}(t) - CriticalZ_{0})} } )
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\tag{Eq(2)}
+(\frac{ \alpha} {\beta } )
+\end{equation}
+$$
+
+
+
+
