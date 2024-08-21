@@ -14,5 +14,4 @@ This Repository includes two projects. I: R projects and II: SQl Projects.
 2: A code for analysis of world oldest businesses
 
 
- .....................................................................................................
  Note : Execpt that Analytical project, all of thses codes were developed and discussed through teaching classess that I had about R and SQL.
